@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b57d0" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1b1e24" media="(prefers-color-scheme: dark)">
+    <meta name="color-scheme" content="light dark">
+    <title>Cites Mèdiques</title>
+
+    <!-- PWA: instal·lable -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Cites Mèdiques">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <style>
+        /* =====================================================================
+           CITES MÈDIQUES · Sistema de disseny (Material 3 / Android)
+           Mòbil primer · mode clar i fosc · zones segures · tocs de 48 px
+           ===================================================================== */
+        :root {
+            color-scheme: light dark;
+            --bar-h: 56px;
+            --nav-h: 68px;
+
+            --bg: #f6f8fc;
+            --surface: #ffffff;
+            --on: #1a1c1e;
+            --onv: #44474e;
+            --ph: #6b6f78;
+            --outline: #74777f;
+            --outline-v: #c4c6d0;
+
+            --primary: #0b57d0;
+            --on-primary: #ffffff;
+            --pc: #d3e3fd;
+            --on-pc: #041e49;
+            --sc: #dde3ea;
+            --on-sc: #171c22;
+            --tc: #c7ece9;
+            --on-tc: #00201e;
+            --teal: #00676b;
+
+            --err: #b3261e;
+            --on-err: #ffffff;
+            --ec: #f9dedc;
+            --on-ec: #410e0b;
+            --ok: #146c2e;
+            --okc: #c4eed0;
+            --on-okc: #072711;
+            --warn: #b26a00;
+            --wc: #ffddb3;
+            --on-wc: #2b1700;
+
+            --tint-err: #fff8f7;
+            --tint-warn: #fffaf3;
+            --tint-info: #f6f9ff;
+            --tint-ok: #f7fcf8;
+
+            --bar: #0b57d0;
+            --on-bar: #ffffff;
+            --nav-bg: #eef2f9;
+            --scrim: rgba(10, 14, 22, 0.45);
+            --dialog: #ffffff;
+
+            --snack: #2f3033;
+            --on-snack: #f1f0f4;
+            --snack-ok: #7fdc99;
+            --snack-err: #ffb4ab;
+
+            --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2344474e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #111318;
+                --surface: #1b1e24;
+                --on: #e3e2e6;
+                --onv: #c4c6d0;
+                --ph: #9a9da8;
+                --outline: #8e9099;
+                --outline-v: #44474e;
+
+                --primary: #a8c7fa;
+                --on-primary: #062e6f;
+                --pc: #0842a0;
+                --on-pc: #d3e3fd;
+                --sc: #394352;
+                --on-sc: #d9e3f5;
+                --tc: #004f52;
+                --on-tc: #a3f0ee;
+                --teal: #4fd8d6;
+
+                --err: #f2b8b5;
+                --on-err: #601410;
+                --ec: #8c1d18;
+                --on-ec: #f9dedc;
+                --ok: #6dd58c;
+                --okc: #0f5223;
+                --on-okc: #c4eed0;
+                --warn: #ffb870;
+                --wc: #5c3a00;
+                --on-wc: #ffddb3;
+
+                --tint-err: #2a1c1b;
+                --tint-warn: #2a2218;
+                --tint-info: #1a2230;
+                --tint-ok: #18261c;
+
+                --bar: #1b1e24;
+                --on-bar: #e3e2e6;
+                --nav-bg: #1f2229;
+                --scrim: rgba(0, 0, 0, 0.6);
+                --dialog: #272a31;
+                --abtn-edit: #1f3d6b;
+                --abtn-ok: #1c4a2c;
+                --abtn-del: #552421;
+
+                --snack: #e3e2e6;
+                --on-snack: #1a1c1e;
+                --snack-ok: #146c2e;
+                --snack-err: #b3261e;
+
+                --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c4c6d0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            }
+        }
+
+        /* ---------- Base ---------- */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            overscroll-behavior-y: contain; /* evita que un gest de "tirar cap avall" recarregui l'app i es perdi el que s'escrivia */
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Roboto', 'Segoe UI', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            background: var(--bg);
+            color: var(--on);
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: clip;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button, input, select, textarea { font: inherit; color: inherit; }
+        button { border: 0; background: none; cursor: pointer; touch-action: manipulation; }
+        h1, h2, h3 { font-weight: 600; }
+
+        .ic {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex: none;
+        }
+
+        :focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+        /* ---------- Barra superior ---------- */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: calc(var(--bar-h) + env(safe-area-inset-top));
+            padding: env(safe-area-inset-top) max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+            background: var(--bar);
+            color: var(--on-bar);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .header-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 11px;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .header-icon .ic { width: 22px; height: 22px; }
+
+        .header h1 {
+            font-size: 20px;
+            letter-spacing: 0.1px;
+        }
+
+        /* ---------- Contingut ---------- */
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 12px max(12px, env(safe-area-inset-right)) calc(var(--nav-h) + env(safe-area-inset-bottom) + 28px) max(12px, env(safe-area-inset-left));
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .stat-card {
+            border-radius: 16px;
+            padding: 10px 4px;
+            text-align: center;
+            min-width: 0;
+        }
+
+        .stat-card:nth-child(1) { background: var(--pc); color: var(--on-pc); }
+        .stat-card:nth-child(2) { background: var(--wc); color: var(--on-wc); }
+        .stat-card:nth-child(3) { background: var(--okc); color: var(--on-okc); }
+        .stat-card:nth-child(4) { background: var(--sc); color: var(--on-sc); }
+
+        .stat-num {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.15;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-top: 2px;
+        }
+
+        /* ---------- Barra de navegació inferior ---------- */
+        .tabs {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 40;
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            padding: 8px max(8px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+            background: var(--nav-bg);
+            border-top: 1px solid var(--outline-v);
+        }
+
+        .tab-btn {
+            flex: 1 1 0;
+            min-width: 0;
+            max-width: 168px;
+            min-height: 52px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--onv);
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .tab-ico {
+            position: relative;
+            width: 64px;
+            height: 32px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            transition: background 0.2s;
+        }
+
+        .tab-btn:active .tab-ico { background: var(--sc); }
+
+        .tab-btn.active { color: var(--on); font-weight: 700; }
+        .tab-btn.active .tab-ico { background: var(--pc); color: var(--on-pc); }
+
+        .tab-txt { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .nav-badge {
+            position: absolute;
+            top: -3px;
+            right: 6px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            background: var(--primary);
+            color: var(--on-primary);
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .nav-badge[hidden] { display: none; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: apareix 0.2s ease; }
+
+        @keyframes apareix {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ---------- Targetes ---------- */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--outline-v);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .card.editing {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        .card-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .card-ico {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: var(--pc);
+            color: var(--on-pc);
+            flex: none;
+        }
+
+        .card h2 { font-size: 18px; line-height: 1.3; }
+
+        /* ---------- Formularis ---------- */
+        .form-group { margin-bottom: 14px; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            column-gap: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--onv);
+            margin-bottom: 6px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            min-height: 48px;
+            padding: 10px 14px;
+            font-size: 16px;
+            background: var(--surface);
+            color: var(--on);
+            border: 1px solid var(--outline);
+            border-radius: 12px;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        textarea { min-height: 92px; line-height: 1.4; resize: vertical; }
+
+        input::placeholder, textarea::placeholder { color: var(--ph); opacity: 1; }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        select {
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: var(--chevron);
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 20px;
+            padding-right: 44px;
+            text-overflow: ellipsis;
+        }
+
+        .select-amb-accio { display: flex; gap: 8px; align-items: stretch; }
+        .select-amb-accio select { flex: 1; min-width: 0; }
+
+        .form-hint { font-size: 13px; color: var(--onv); margin-top: 6px; line-height: 1.4; }
+
+        /* ---------- Botons ---------- */
+        .btn-primary, .btn-save, .btn-cancel, .btn-confirm, .btn-tonal, .btn-restore, .btn-cancel-edit {
+            min-height: 44px;
+            padding: 0 20px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.1px;
+            transition: filter 0.12s, transform 0.08s;
+        }
+
+        .btn-primary { width: 100%; font-size: 15px; background: var(--primary); color: var(--on-primary); }
+        .btn-save { background: var(--primary); color: var(--on-primary); }
+        .btn-restore { background: var(--sc); color: var(--on-sc); }
+        .btn-cancel { border: 1px solid var(--outline); color: var(--primary); }
+        .btn-cancel-edit { width: 100%; margin-top: 10px; }
+        .btn-confirm { background: var(--err); color: var(--on-err); }
+        .btn-tonal { min-height: 40px; background: var(--pc); color: var(--on-pc); }
+        .btn-inline { width: auto; flex: 0 0 auto; padding: 0 16px; }
+
+        .btn-mini {
+            flex: 0 0 48px;
+            width: 48px;
+            min-height: 48px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: var(--pc);
+            color: var(--on-pc);
+        }
+
+        .btn-primary:active, .btn-save:active, .btn-cancel:active, .btn-confirm:active, .btn-tonal:active,
+        .btn-restore:active, .btn-mini:active, .list-item-actions button:active {
+            filter: brightness(0.92);
+            transform: scale(0.98);
+        }
+
+        /* ---------- Llistes ---------- */
+        .list-item {
+            background: var(--surface);
+            border: 1px solid var(--outline-v);
+            border-left-width: 5px;
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .list-item:last-child { margin-bottom: 0; }
+
+        .item-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; } /* si el nom no hi cap amb els botons, aquests baixen a la línia de sota */
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            flex: none;
+            font-size: 18px;
+            font-weight: 700;
+            background: var(--pc);
+            color: var(--on-pc);
+        }
+
+        .avatar .ic { width: 22px; height: 22px; }
+
+        .list-item-info { flex: 1 1 auto; min-width: 0; max-width: calc(100% - 56px); } /* 56 = avatar (44) + espai (12): el nom sempre queda al costat de l'avatar */
+        .list-item-info h3 { font-size: 16px; line-height: 1.3; overflow-wrap: anywhere; }
+        .list-item-info p {
+            font-size: 13px;
+            color: var(--onv);
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+            width: 0;          /* el subtítol no compta per decidir si els botons hi caben: només el nom */
+            min-width: 100%;
+        }
+
+        .list-item.member { border-left-color: var(--primary); }
+        .list-item.metge { border-left-color: var(--teal); }
+        .list-item.metge .avatar { background: var(--tc); color: var(--on-tc); }
+
+        .list-item.cita-proxima { border-left-color: var(--primary); }
+        .list-item.cita-proxima .avatar { background: var(--sc); color: var(--on-sc); }
+
+        .list-item.cita-vencuda { border-left-color: var(--err); background: var(--tint-err); }
+        .list-item.cita-vencuda .avatar { background: var(--ec); color: var(--on-ec); }
+
+        .list-item.cita-avui { border-left-color: var(--warn); background: var(--tint-warn); }
+        .list-item.cita-avui .avatar { background: var(--wc); color: var(--on-wc); }
+
+        .list-item.cita-dema { border-left-color: var(--primary); background: var(--tint-info); }
+        .list-item.cita-dema .avatar { background: var(--pc); color: var(--on-pc); }
+
+        .list-item.cita-completada { border-left-color: var(--ok); background: var(--tint-ok); }
+        .list-item.cita-completada .avatar { background: var(--okc); color: var(--on-okc); }
+
+        .cita-badge-vencuda, .cita-badge-avui, .cita-badge-dema {
+            display: inline-block;
+            margin-top: 4px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .cita-badge-vencuda { background: var(--ec); color: var(--on-ec); }
+        .cita-badge-avui { background: var(--wc); color: var(--on-wc); }
+        .cita-badge-dema { background: var(--pc); color: var(--on-pc); }
+
+        .cita-detalls {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--outline-v);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cita-fila { display: flex; gap: 10px; font-size: 14px; line-height: 1.4; }
+
+        .cita-etiqueta {
+            flex: 0 0 112px;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            color: var(--onv);
+            font-weight: 500;
+        }
+
+        .cita-etiqueta .ic { width: 18px; height: 18px; margin-top: 1px; }
+
+        .cita-valor { flex: 1; min-width: 0; font-weight: 500; overflow-wrap: anywhere; white-space: pre-wrap; }
+
+        .list-item-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+
+        .list-item-actions button {
+            position: relative;
+            flex: 0 0 auto;
+            height: 36px;
+            min-height: 36px;
+            padding: 0 14px 0 10px;
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: filter 0.12s, transform 0.08s;
+        }
+
+        /* La zona tàctil és més gran que el botó (44 px) sense ocupar més espai */
+        .list-item-actions button::after { content: ''; position: absolute; inset: -4px -2px; }
+
+        .list-item-actions .ic { width: 18px; height: 18px; }
+
+        /* "Eliminar": només icona, a la dreta i separat de la resta per evitar tocs accidentals */
+        .list-item-actions .btn-danger { margin-left: auto; width: 36px; padding: 0; }
+        .list-item-actions .btn-danger span { display: none; }
+
+        /* Llistes curtes (membres, metges, historial): accions només amb icona, a la dreta del nom */
+        .list-item-actions.en-linia { margin-top: 0; margin-left: auto; flex: none; gap: 8px; }
+        .list-item-actions.en-linia button { width: 36px; padding: 0; }
+        .list-item-actions.en-linia button span { display: none; }
+        .list-item-actions.en-linia .btn-danger { margin-left: 0; }
+
+        .btn-success { background: var(--abtn-ok, var(--okc)); color: var(--on-okc); }
+        .btn-edit { background: var(--abtn-edit, var(--pc)); color: var(--on-pc); }
+        .btn-danger { background: var(--abtn-del, var(--ec)); color: var(--on-ec); }
+
+        .filtre-bar { margin-bottom: 14px; }
+        .filtre-resum { font-size: 13px; font-weight: 500; color: var(--onv); margin-top: 6px; }
+
+        .empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 28px 16px;
+            text-align: center;
+            color: var(--onv);
+            font-size: 15px;
+        }
+
+        .empty .ic { width: 38px; height: 38px; opacity: 0.55; }
+        .empty-cta { display: flex; justify-content: center; padding-bottom: 12px; }
+
+        .backup-hint { font-size: 14px; color: var(--onv); margin-bottom: 14px; line-height: 1.5; }
+        .fila-afegir { display: flex; gap: 8px; align-items: stretch; }
+        .fila-afegir input { flex: 1; min-width: 0; }
+
+        .backup-actions { display: flex; gap: 8px; }
+        .backup-actions button { flex: 1 1 0; min-width: 0; width: auto; }
+
+        /* ---------- Avisos (snackbar) ---------- */
+        .msg {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .msg.show { display: flex; }
+        .msg.success { background: var(--okc); color: var(--on-okc); }
+        .msg.error { background: var(--ec); color: var(--on-ec); }
+
+        .msg.snack {
+            position: fixed;
+            left: 12px;
+            right: 12px;
+            bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px);
+            max-width: 560px;
+            margin: 0 auto;
+            z-index: 60;
+            background: var(--snack);
+            color: var(--on-snack);
+            border-radius: 14px;
+            padding: 14px 16px;
+            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.32);
+            pointer-events: none;
+            animation: puja 0.2s ease;
+        }
+
+        .msg.snack.success .ic { color: var(--snack-ok); }
+        .msg.snack.error .ic { color: var(--snack-err); }
+
+        @keyframes puja {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        /* ---------- Diàlegs ---------- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: var(--scrim);
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        #editMemberModal { align-items: flex-start; padding-top: max(24px, 12vh); } /* el teclat no tapa el camp */
+
+        .modal-box {
+            width: 100%;
+            max-width: 380px;
+            padding: 24px;
+            border-radius: 28px;
+            background: var(--dialog);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+            animation: apareix 0.15s ease;
+        }
+
+        .modal-box p { font-size: 16px; line-height: 1.5; }
+        #confirmMsg { margin-bottom: 24px; }
+        #promptTitle { font-size: 20px; font-weight: 600; margin-bottom: 16px; }
+        .modal-box input { margin-bottom: 16px; }
+        .modal-box .msg { margin-bottom: 12px; }
+        .modal-actions { display: flex; gap: 10px; }
+        .modal-actions button { flex: 1; }
+
+        /* ---------- Pantalles més amples ---------- */
+        @media (min-width: 600px) {
+            .container { padding-top: 20px; }
+            .card { padding: 20px; border-radius: 24px; }
+            .stats { gap: 12px; margin-bottom: 18px; }
+            .stat-num { font-size: 28px; }
+            .stat-label { font-size: 12px; }
+            .backup-actions { flex-direction: row; }
+            .backup-actions button { flex: 1; width: auto; }
+        }
+
+        @media (max-width: 359px) {
+            .tab-btn { font-size: 11px; }
+            .tab-ico { width: 56px; }
+            .stat-label { font-size: 10px; }
+            .cita-etiqueta { flex-basis: 98px; }
+            .card { padding: 14px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Icones (sprite SVG, estil línia) -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <symbol id="i-pill" viewBox="0 0 24 24"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></symbol>
+        <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+        <symbol id="i-calendar-plus" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><path d="M3 10h18"/><path d="M16 19h6"/><path d="M19 16v6"/></symbol>
+        <symbol id="i-calendar-check" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/></symbol>
+        <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
+        <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+        <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+        <symbol id="i-user-plus" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></symbol>
+        <symbol id="i-stethoscope" viewBox="0 0 24 24"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+        <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+        <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+        <symbol id="i-alert-triangle" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+        <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+        <symbol id="i-edit" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></symbol>
+        <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></symbol>
+        <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+        <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></symbol>
+        <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></symbol>
+        <symbol id="i-save" viewBox="0 0 24 24"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></symbol>
+        <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+        <symbol id="i-alert-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol>
+    </svg>
+
+    <header class="header">
+        <div class="header-icon"><svg class="ic" aria-hidden="true"><use href="#i-pill"/></svg></div>
+        <h1>Cites Mèdiques</h1>
+    </header>
+
+    <main class="container">
+        <section class="stats" aria-label="Resum">
+            <div class="stat-card">
+                <div class="stat-num" id="s1">0</div>
+                <div class="stat-label">Membres</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" id="s2">0</div>
+                <div class="stat-label">Pròximes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" id="s3">0</div>
+                <div class="stat-label">Fetes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" id="s4">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </section>
+
+        <!-- TAB 0: MEMBRES -->
+        <div class="tab-content active" id="c0">
+            <div class="card">
+                <div class="card-head"><span class="card-ico"><svg class="ic" aria-hidden="true"><use href="#i-user-plus"/></svg></span><h2>Afegir Membre</h2></div>
+                <div id="m0" class="msg snack" role="status" aria-live="polite"></div>
+                <div class="form-group" style="margin-bottom: 0">
+                    <label for="in0">Nom *</label>
+                    <div class="fila-afegir">
+                        <input type="text" id="in0" placeholder="Joan García" autocomplete="off" autocapitalize="words" enterkeyhint="done">
+                        <button class="btn-primary btn-inline" type="button" onclick="addMember()"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg><span>Afegir</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-head"><span class="card-ico"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span><h2>Membres</h2></div>
+                <div id="list0"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-head"><span class="card-ico"><svg class="ic" aria-hidden="true"><use href="#i-stethoscope"/></svg></span><h2>Metges</h2></div>
+                <div id="mD" class="msg snack" role="status" aria-live="polite"></div>
+                <div class="form-group" style="margin-bottom: 0">
+                    <label for="inD">Nom del metge *</label>
+                    <div class="fila-afegir">
+                        <input type="text" id="inD" placeholder="Dr. Garcia" autocomplete="off" autocapitalize="words" enterkeyhint="done">
+                        <button class="btn-primary btn-inline" type="button" onclick="addDoctor()"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg><span>Afegir</span></button>
+                    </div>
+                </div>
+                <div id="listD" style="margin-top: 16px"></div>
+            </div>
+        </div>
+
+        <!-- TAB 1: NOVA CITA -->
+        <div class="tab-content" id="c1">
+            <div class="card" id="citaCard">
+                <div class="card-head"><span class="card-ico"><svg class="ic" aria-hidden="true"><use href="#i-calendar-plus"/></svg></span><h2 id="citaFormTitle">Nova Cita</h2></div>
+                <div id="m1" class="msg snack" role="status" aria-live="polite"></div>
+
+                <div class="form-group">
+                    <label for="in1">Membre *</label>
+                    <select id="in1">
+                        <option value="">-- Selecciona --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="in2">Metge *</label>
+                    <div class="select-amb-accio">
+                        <select id="in2">
+                            <option value="">-- Selecciona --</option>
+                        </select>
+                        <button class="btn-mini" id="btnNouMetge" type="button" aria-label="Afegir un metge nou" title="Afegir un metge nou"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                    </div>
+                    <div class="form-hint" id="hintMetges"></div>
+                </div>
+                <div class="form-group">
+                    <label for="in3">Especialitat</label>
+                    <input type="text" id="in3" placeholder="Cardiòleg" autocomplete="off" autocapitalize="sentences">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="in4">Data *</label>
+                        <input type="date" id="in4">
+                    </div>
+                    <div class="form-group">
+                        <label for="in5">Hora *</label>
+                        <input type="time" id="in5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="in6">Ubicació</label>
+                    <input type="text" id="in6" placeholder="Hospital" autocomplete="off" autocapitalize="sentences">
+                </div>
+                <div class="form-group">
+                    <label for="in7">Notes</label>
+                    <textarea id="in7" rows="3" placeholder="Detalls..." autocapitalize="sentences"></textarea>
+                </div>
+                <button class="btn-primary" id="btnCitaSave" type="button" onclick="addCite()">Registrar</button>
+                <button class="btn-cancel btn-cancel-edit" id="btnCitaCancel" type="button" style="display:none" onclick="cancelEditCite()">Cancel·lar edició</button>
+            </div>
+        </div>
+
+        <!-- TAB 2: CITES PROXIMES -->
+        <div class="tab-content" id="c2">
+            <div class="card">
+                <div class="card-head"><span class="card-ico"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg></span><h2>Pròximes</h2></div>
+                <div id="m2" class="msg snack" role="status" aria-live="polite"></div>
+                <div class="filtre-bar" id="filtreBar" style="display:none">
+                    <label for="filtreMembre">Llistar per membre</label>
+                    <select id="filtreMembre" aria-label="Llistar les cites pròximes per membre"></select>
+                    <div class="filtre-resum" id="filtreResum"></div>
+                </div>
+                <div id="list1"></div>
+            </div>
+        </div>
+
+        <!-- TAB 3: HISTORIAL -->
+        <div class="tab-content" id="c3">
+            <div class="card">
+                <div class="card-head"><span class="card-ico"><svg class="ic" aria-hidden="true"><use href="#i-history"/></svg></span><h2>Historial</h2></div>
+                <div id="m3" class="msg snack" role="status" aria-live="polite"></div>
+                <div id="list2"></div>
+            </div>
+        </div>
+
+        <!-- CÒPIES DE SEGURETAT (sempre visible, al final de tot) -->
+        <div class="card">
+            <div class="card-head"><span class="card-ico"><svg class="ic" aria-hidden="true"><use href="#i-save"/></svg></span><h2>Còpia de Seguretat</h2></div>
+            <div id="mBackup" class="msg snack" role="status" aria-live="polite"></div>
+            <p class="backup-hint">Guarda totes les dades (membres, metges i cites) en un fitxer, o restaura-les des d'un fitxer anterior.</p>
+            <div class="backup-actions">
+                <button class="btn-primary" id="btnExport" type="button"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg><span>Exportar</span></button>
+                <button class="btn-primary btn-restore" id="btnImportTrigger" type="button"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg><span>Restaurar</span></button>
+                <input type="file" id="fileImport" accept="application/json" style="display:none">
+            </div>
+        </div>
+    </main>
+
+    <!-- NAVEGACIÓ INFERIOR (a l'abast del polze) -->
+    <nav class="tabs" aria-label="Navegació principal">
+        <button class="tab-btn" data-tab="1" onclick="tab(1)"><span class="tab-ico"><svg class="ic" aria-hidden="true"><use href="#i-calendar-plus"/></svg></span><span class="tab-txt">Nova</span></button>
+        <button class="tab-btn" data-tab="2" onclick="tab(2)"><span class="tab-ico"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg><span class="nav-badge" id="navBadge" hidden>0</span></span><span class="tab-txt">Pròximes</span></button>
+        <button class="tab-btn" data-tab="3" onclick="tab(3)"><span class="tab-ico"><svg class="ic" aria-hidden="true"><use href="#i-history"/></svg></span><span class="tab-txt">Historial</span></button>
+        <button class="tab-btn active" data-tab="0" aria-current="page" onclick="tab(0)"><span class="tab-ico"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span><span class="tab-txt">Membres</span></button>
+    </nav>
+
+    <!-- MODAL DE CONFIRMACIÓ PROPI -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-box">
+            <p id="confirmMsg">Estàs segur?</p>
+            <div class="modal-actions">
+                <button class="btn-cancel" id="confirmCancelBtn" type="button">Cancel·lar</button>
+                <button class="btn-confirm" id="confirmOkBtn" type="button">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL D'EDICIÓ DE MEMBRE -->
+    <div class="modal-overlay" id="editMemberModal">
+        <div class="modal-box">
+            <p id="promptTitle">Editar membre</p>
+            <div id="editMemberMsg" class="msg"></div>
+            <input type="text" id="editMemberName" maxlength="60" autocomplete="off" aria-label="Nom del membre">
+            <div class="modal-actions">
+                <button class="btn-cancel" id="editMemberCancel" type="button">Cancel·lar</button>
+                <button class="btn-save" id="editMemberSave" type="button">Desar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let members = JSON.parse(localStorage.getItem('m')) || [];
+        let cites = JSON.parse(localStorage.getItem('c')) || [];
+        let doctors = JSON.parse(localStorage.getItem('d')) || []; // llista de metges: [{id, nom}]
+
+        function nouIdDins(docs) {
+            let id = Date.now();
+            while (docs.some(function(d) { return d.id === id; })) id++;
+            return id;
+        }
+        // Afegeix a la llista els metges de les cites que encara no hi són (cites antigues, còpies...)
+        function completaMetges(docs, cs) {
+            cs.forEach(function(c) {
+                if (c.metge && !docs.some(function(d) { return d.nom === c.metge; })) {
+                    docs.push({ id: nouIdDins(docs), nom: c.metge });
+                }
+            });
+            return docs;
+        }
+        // Migració: abans el metge s'escrivia a mà; es converteix en la llista sense perdre cap cita
+        (function migraMetges() {
+            const abans = doctors.length;
+            completaMetges(doctors, cites);
+            if (doctors.length !== abans) localStorage.setItem('d', JSON.stringify(doctors));
+        })();
+        let editingCiteId = null;   // cita que s'està editant (null = formulari de nova cita)
+        let citeReturnTab = 2;      // pestanya on tornar en acabar d'editar (2 = Pròximes, 3 = Historial)
+        let filtreProximes = '';    // id del membre pel qual es filtra Pròximes ('' = tots)
+
+        // ---- Dates: sempre en text AAAA-MM-DD i en hora LOCAL (sense desplaçaments de fus horari) ----
+        function avuiISO() {
+            const d = new Date();
+            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        }
+        function formatData(iso) {
+            const p = String(iso).split('-');
+            if (p.length !== 3) return String(iso);
+            return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString('ca-ES');
+        }
+        function esVencuda(c) { return !c.done && c.data < avuiISO(); }
+        function comparaCites(a, b) {
+            return (a.data + ' ' + (a.hora || '')).localeCompare(b.data + ' ' + (b.hora || ''));
+        }
+        // Dies que falten per a una data AAAA-MM-DD (0 = avui, 1 = demà, negatiu = passada).
+        // Es calcula amb dates UTC per no errar-se en els canvis d'hora d'estiu/hivern.
+        function diesFins(iso) {
+            const p = String(iso).split('-').map(Number);
+            const ara = new Date();
+            const avui = Date.UTC(ara.getFullYear(), ara.getMonth(), ara.getDate());
+            return Math.round((Date.UTC(p[0], p[1] - 1, p[2]) - avui) / 86400000);
+        }
+        let diaRenderitzat = avuiISO(); // per detectar quan canvia el dia amb l'app oberta
+
+        // ---- Interfície: icones SVG i components ----
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+        function icona(nom) {
+            const svg = document.createElementNS(SVG_NS, 'svg');
+            svg.setAttribute('class', 'ic');
+            svg.setAttribute('aria-hidden', 'true');
+            const use = document.createElementNS(SVG_NS, 'use');
+            use.setAttribute('href', '#i-' + nom);
+            svg.appendChild(use);
+            return svg;
+        }
+        function boto(classe, nomIcona, text, aria, alClicar) {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = classe;
+            if (nomIcona) b.appendChild(icona(nomIcona));
+            const t = document.createElement('span');
+            t.textContent = text;
+            b.appendChild(t);
+            if (aria) b.setAttribute('aria-label', aria);
+            b.addEventListener('click', alClicar);
+            return b;
+        }
+        function avatar(contingut) {
+            const a = document.createElement('div');
+            a.className = 'avatar';
+            a.setAttribute('aria-hidden', 'true');
+            if (typeof contingut === 'string') a.textContent = contingut; else a.appendChild(contingut);
+            return a;
+        }
+        function elBuit(text, nomIcona) {
+            const d = document.createElement('div');
+            d.className = 'empty';
+            d.appendChild(icona(nomIcona));
+            const p = document.createElement('p');
+            p.textContent = text;
+            d.appendChild(p);
+            return d;
+        }
+        function etiquetaCita(classe, text) {
+            const e = document.createElement('div');
+            e.className = classe;
+            e.textContent = text;
+            return e;
+        }
+
+        function save() {
+            localStorage.setItem('m', JSON.stringify(members));
+            localStorage.setItem('c', JSON.stringify(cites));
+            localStorage.setItem('d', JSON.stringify(doctors));
+            render();
+        }
+
+        function showMsg(id, txt, err) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.textContent = '';
+            el.appendChild(icona(err ? 'alert-circle' : 'check-circle'));
+            const t = document.createElement('span');
+            t.textContent = String(txt).replace(/^\s*[✅❌]\s*/, ''); // la icona ja indica si és un èxit o un error
+            el.appendChild(t);
+            el.classList.remove('success', 'error');
+            el.classList.add('show', err ? 'error' : 'success');
+            if (el.classList.contains('snack')) {
+                document.querySelectorAll('.snack.show').forEach(function(x) { if (x !== el) x.classList.remove('show'); });
+            }
+            clearTimeout(el._temps);
+            el._temps = setTimeout(function() { el.classList.remove('show'); }, 4000);
+        }
+
+        function tab(n) {
+            if (n !== 1 && editingCiteId !== null) resetCiteForm(); // abandonar l'edició la descarta
+            document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(e => { e.classList.remove('active'); e.removeAttribute('aria-current'); });
+            document.getElementById('c' + n).classList.add('active');
+            const actiu = document.querySelector('.tab-btn[data-tab="' + n + '"]');
+            actiu.classList.add('active');
+            actiu.setAttribute('aria-current', 'page');
+            window.scrollTo(0, 0);
+        }
+
+        function addMember() {
+            const nom = document.getElementById('in0').value.trim();
+            if (!nom) {
+                showMsg('m0', '❌ Escriu el nom', true);
+                return;
+            }
+            members.push({ id: Date.now(), nom });
+            document.getElementById('in0').value = '';
+            save();
+            showMsg('m0', '✅ Afegit!', false);
+        }
+
+        // MODAL DE CONFIRMACIÓ PROPI (substitueix confirm() natiu, que no funciona
+        // dins de finestres amb restriccions de sandbox)
+        let pendingConfirmAction = null;
+
+        function showConfirm(msg, onConfirm) {
+            document.getElementById('confirmMsg').textContent = msg;
+            pendingConfirmAction = onConfirm;
+            document.getElementById('confirmModal').classList.add('show');
+        }
+
+        function hideConfirm() {
+            document.getElementById('confirmModal').classList.remove('show');
+            pendingConfirmAction = null;
+        }
+
+        document.getElementById('confirmCancelBtn').addEventListener('click', hideConfirm);
+        document.getElementById('confirmOkBtn').addEventListener('click', function() {
+            const action = pendingConfirmAction;
+            hideConfirm();
+            if (action) action();
+        });
+
+        function delMember(mid) {
+            const memberToDelete = members.find(m => m.id == mid);
+            if (!memberToDelete) {
+                console.error('Membre no trobat amb id:', mid);
+                return;
+            }
+            showConfirm('Estàs segur que vols eliminar ' + memberToDelete.nom + '?', function() {
+                members = members.filter(m => m.id != mid);
+                cites = cites.filter(c => c.mid != mid);
+                save();
+                showMsg('m0', '✅ Eliminat!', false);
+            });
+        }
+
+        function resetCiteForm() {
+            ['in1', 'in2', 'in3', 'in4', 'in5', 'in6', 'in7'].forEach(function(id) {
+                document.getElementById(id).value = '';
+            });
+            editingCiteId = null;
+            document.getElementById('citaFormTitle').textContent = 'Nova Cita';
+            document.getElementById('btnCitaSave').textContent = 'Registrar';
+            document.getElementById('btnCitaCancel').style.display = 'none';
+            document.getElementById('citaCard').classList.remove('editing');
+        }
+
+        function addCite() {
+            const mid = parseInt(document.getElementById('in1').value);
+            const metge = document.getElementById('in2').value.trim();
+            const data = document.getElementById('in4').value;
+            const hora = document.getElementById('in5').value;
+
+            if (!mid || !metge || !data || !hora) {
+                showMsg('m1', '❌ Camps obligatoris', true);
+                return;
+            }
+
+            const camps = {
+                mid: mid,
+                metge: metge,
+                esp: document.getElementById('in3').value.trim(),
+                data: data,
+                hora: hora,
+                ubi: document.getElementById('in6').value.trim(),
+                notes: document.getElementById('in7').value.trim()
+            };
+
+            // MODE EDICIÓ: actualitza la cita existent (conserva id i si està feta)
+            if (editingCiteId !== null) {
+                const c = cites.find(function(x) { return x.id == editingCiteId; });
+                if (c) Object.assign(c, camps);
+                const tornar = citeReturnTab;
+                resetCiteForm();
+                save();
+                tab(tornar);
+                showMsg(tornar === 3 ? 'm3' : 'm2', '✅ Cita actualitzada!', false);
+                return;
+            }
+
+            cites.push(Object.assign({ id: Date.now(), done: false }, camps));
+            resetCiteForm();
+            save();
+            showMsg('m1', '✅ Registrada!', false);
+        }
+
+        function editCite(citeId) {
+            const c = cites.find(function(x) { return x.id == citeId; });
+            if (!c) return;
+            const activa = document.querySelector('.tab-content.active');
+            citeReturnTab = (activa && activa.id === 'c3') ? 3 : 2;
+            tab(1);
+            editingCiteId = c.id;
+            document.getElementById('in1').value = c.mid;
+            if (c.metge && !doctors.some(function(d) { return d.nom === c.metge; })) {
+                completaMetges(doctors, [c]); // per si el metge no era a la llista
+                localStorage.setItem('d', JSON.stringify(doctors));
+            }
+            renderMetgesSelect();
+            document.getElementById('in2').value = c.metge || '';
+            document.getElementById('in3').value = c.esp || '';
+            document.getElementById('in4').value = c.data || '';
+            document.getElementById('in5').value = c.hora || '';
+            document.getElementById('in6').value = c.ubi || '';
+            document.getElementById('in7').value = c.notes || '';
+            document.getElementById('citaFormTitle').textContent = 'Editar Cita';
+            document.getElementById('btnCitaSave').textContent = 'Desar canvis';
+            document.getElementById('btnCitaCancel').style.display = '';
+            document.getElementById('m1').classList.remove('show'); // amaga missatges antics ("Registrada!")
+            document.getElementById('citaCard').classList.add('editing');
+            // Porta el formulari just sota la barra superior
+            const barra = document.querySelector('.header');
+            const y = document.getElementById('citaCard').getBoundingClientRect().top + window.scrollY - (barra ? barra.offsetHeight : 0) - 12;
+            window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+        }
+
+        function cancelEditCite() {
+            const tornar = citeReturnTab;
+            resetCiteForm();
+            tab(tornar);
+        }
+
+        // ---- Finestra de text (editar membres i metges, afegir metges ràpidament) ----
+        let promptCallback = null; // rep el nom; retorna un text d'error o res si tot va bé
+
+        function showPrompt(titol, valor, textBoto, onSave) {
+            document.getElementById('promptTitle').textContent = titol;
+            document.getElementById('editMemberSave').textContent = textBoto;
+            const input = document.getElementById('editMemberName');
+            input.value = valor;
+            input.setAttribute('aria-label', titol);
+            document.getElementById('editMemberMsg').classList.remove('show');
+            promptCallback = onSave;
+            document.getElementById('editMemberModal').classList.add('show');
+            input.focus();
+            input.select();
+        }
+
+        function closePrompt() {
+            document.getElementById('editMemberModal').classList.remove('show');
+            promptCallback = null;
+        }
+
+        function submitPrompt() {
+            const nom = document.getElementById('editMemberName').value.trim();
+            if (!nom) {
+                showMsg('editMemberMsg', '❌ Escriu el nom', true);
+                return;
+            }
+            const error = promptCallback ? promptCallback(nom) : '';
+            if (error) {
+                showMsg('editMemberMsg', '❌ ' + error, true);
+                return;
+            }
+            closePrompt();
+        }
+
+        document.getElementById('editMemberSave').addEventListener('click', submitPrompt);
+        document.getElementById('editMemberCancel').addEventListener('click', closePrompt);
+        document.getElementById('editMemberName').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); submitPrompt(); }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'Escape') return;
+            if (document.getElementById('editMemberModal').classList.contains('show')) closePrompt();
+            else if (document.getElementById('confirmModal').classList.contains('show')) hideConfirm();
+        });
+
+        // ---- Editar membre ----
+        function editMember(memberId) {
+            const m = members.find(function(x) { return x.id == memberId; });
+            if (!m) return;
+            showPrompt('Editar membre', m.nom, 'Desar', function(nom) {
+                m.nom = nom;
+                save();
+                showMsg('m0', '✅ Membre actualitzat!', false);
+                return '';
+            });
+        }
+
+        // ---- Metges ----
+        function nomMetgeExisteix(nom, excepteId) {
+            const minuscula = nom.toLowerCase();
+            return doctors.some(function(d) { return d.id != excepteId && d.nom.toLowerCase() === minuscula; });
+        }
+
+        // Afegeix un metge a la llista. Retorna un text d'error o '' si tot va bé.
+        function afegirMetge(nom) {
+            nom = String(nom).trim();
+            if (!nom) return 'Escriu el nom';
+            if (nomMetgeExisteix(nom)) return 'Ja existeix un metge amb aquest nom';
+            doctors.push({ id: nouIdDins(doctors), nom: nom });
+            return '';
+        }
+
+        function addDoctor() {
+            const input = document.getElementById('inD');
+            const error = afegirMetge(input.value);
+            if (error) {
+                showMsg('mD', '❌ ' + error, true);
+                return;
+            }
+            input.value = '';
+            save();
+            showMsg('mD', '✅ Metge afegit!', false);
+        }
+
+        function quickAddDoctor() {
+            showPrompt('Nou metge', '', 'Afegir', function(nom) {
+                const error = afegirMetge(nom);
+                if (error) return error;
+                save();
+                document.getElementById('in2').value = nom; // el deixa seleccionat al formulari
+                return '';
+            });
+        }
+
+        function editDoctor(doctorId) {
+            const d = doctors.find(function(x) { return x.id == doctorId; });
+            if (!d) return;
+            showPrompt('Editar metge', d.nom, 'Desar', function(nom) {
+                if (nomMetgeExisteix(nom, d.id)) return 'Ja existeix un metge amb aquest nom';
+                const antic = d.nom;
+                const sel = document.getElementById('in2');
+                const estavaSeleccionat = sel.value === antic;
+                d.nom = nom;
+                cites.forEach(function(c) { if (c.metge === antic) c.metge = nom; }); // les cites segueixen el nom nou
+                save();
+                if (estavaSeleccionat) sel.value = nom;
+                showMsg('mD', '✅ Metge actualitzat!', false);
+                return '';
+            });
+        }
+
+        function delDoctor(doctorId) {
+            const d = doctors.find(function(x) { return x.id == doctorId; });
+            if (!d) return;
+            const n = cites.filter(function(c) { return c.metge === d.nom; }).length;
+            if (n > 0) {
+                showMsg('mD', '❌ ' + d.nom + ' té ' + n + (n === 1 ? ' cita' : ' cites') + '. Elimina-les o edita-les abans de treure el metge.', true);
+                return;
+            }
+            showConfirm('Estàs segur que vols eliminar el metge ' + d.nom + '?', function() {
+                doctors = doctors.filter(function(x) { return x.id != doctorId; });
+                save();
+                showMsg('mD', '✅ Metge eliminat!', false);
+            });
+        }
+
+        function ordenaMetges() {
+            return doctors.slice().sort(function(a, b) { return a.nom.localeCompare(b.nom, 'ca'); });
+        }
+
+        function renderMetgesSelect() {
+            const sel = document.getElementById('in2');
+            const previ = sel.value;
+            sel.innerHTML = '';
+            const buida = document.createElement('option');
+            buida.value = '';
+            buida.textContent = '-- Selecciona --';
+            sel.appendChild(buida);
+            ordenaMetges().forEach(function(d) {
+                const o = document.createElement('option');
+                o.value = d.nom;
+                o.textContent = d.nom; // text pur: mai s'interpreta com a HTML
+                sel.appendChild(o);
+            });
+            sel.value = previ;
+            if (sel.selectedIndex < 0) sel.selectedIndex = 0;
+            document.getElementById('hintMetges').textContent = doctors.length === 0
+                ? 'Encara no hi ha metges. Afegeix-ne amb el botó + o a la pestanya Membres.'
+                : 'Per editar o eliminar metges, ves a la pestanya Membres.';
+        }
+
+        function renderMetges() {
+            renderMetgesSelect();
+            const llista = document.getElementById('listD');
+            llista.innerHTML = '';
+            if (doctors.length === 0) {
+                llista.appendChild(elBuit('Cap metge', 'stethoscope'));
+                return;
+            }
+            ordenaMetges().forEach(function(d) {
+                const item = document.createElement('div');
+                item.className = 'list-item metge';
+
+                const cap = document.createElement('div');
+                cap.className = 'item-head';
+                cap.appendChild(avatar(icona('stethoscope')));
+                const info = document.createElement('div');
+                info.className = 'list-item-info';
+                const h3 = document.createElement('h3');
+                h3.textContent = d.nom;
+                const p = document.createElement('p');
+                const n = cites.filter(function(c) { return c.metge === d.nom; }).length;
+                p.textContent = n === 0 ? 'Cap cita' : n + (n === 1 ? ' cita' : ' cites');
+                info.appendChild(h3);
+                info.appendChild(p);
+                cap.appendChild(info);
+                item.appendChild(cap);
+
+                const actions = document.createElement('div');
+                actions.className = 'list-item-actions en-linia';
+                actions.appendChild(boto('btn-edit', 'edit', 'Editar', 'Editar ' + d.nom, function() { editDoctor(d.id); }));
+                actions.appendChild(boto('btn-danger', 'trash', 'Eliminar', 'Eliminar ' + d.nom, function() { delDoctor(d.id); }));
+                cap.appendChild(actions);
+                llista.appendChild(item);
+            });
+        }
+
+        document.getElementById('btnNouMetge').addEventListener('click', quickAddDoctor);
+        document.getElementById('in0').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); addMember(); }
+        });
+        document.getElementById('inD').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); addDoctor(); }
+        });
+
+        document.getElementById('filtreMembre').addEventListener('change', function() {
+            filtreProximes = this.value;
+            render();
+        });
+
+        function markDone(citeId) {
+            const c = cites.find(x => x.id == citeId);
+            if (c) { 
+                c.done = true; 
+                save(); 
+            }
+        }
+
+        function delCite(citeId) {
+            showConfirm('Estàs segur que vols eliminar aquesta cita?', function() {
+                cites = cites.filter(c => c.id != citeId);
+                save();
+            });
+        }
+
+        function render() {
+            diaRenderitzat = avuiISO();
+            // Pendents = totes les cites no fetes (incloses les de data passada), perquè
+            // Pròximes + Fetes sempre sumin el Total i no se'n perdi cap de vista
+            const pending = cites.filter(c => !c.done).length;
+            const done = cites.filter(c => c.done).length;
+
+            document.getElementById('s1').textContent = members.length;
+            document.getElementById('s2').textContent = pending;
+            document.getElementById('s3').textContent = done;
+            document.getElementById('s4').textContent = cites.length;
+            const insignia = document.getElementById('navBadge');
+            insignia.textContent = pending > 99 ? '99+' : String(pending);
+            insignia.hidden = pending === 0;
+
+            renderMetges();
+
+            // MEMBRES
+            const list0 = document.getElementById('list0');
+            list0.innerHTML = '';
+
+            if (members.length === 0) {
+                list0.appendChild(elBuit('Cap membre', 'users'));
+            } else {
+                members.forEach(m => {
+                    const item = document.createElement('div');
+                    item.className = 'list-item member';
+
+                    const cap = document.createElement('div');
+                    cap.className = 'item-head';
+                    cap.appendChild(avatar((Array.from(m.nom.trim())[0] || '?').toUpperCase()));
+                    const info = document.createElement('div');
+                    info.className = 'list-item-info';
+                    const h3 = document.createElement('h3');
+                    h3.textContent = m.nom;
+                    const p = document.createElement('p');
+                    const n = cites.filter(c => c.mid == m.id && !c.done).length;
+                    p.textContent = n === 0 ? 'Cap cita pendent' : n + (n === 1 ? ' cita pendent' : ' cites pendents');
+                    info.appendChild(h3);
+                    info.appendChild(p);
+                    cap.appendChild(info);
+                    item.appendChild(cap);
+
+                    const actions = document.createElement('div');
+                    actions.className = 'list-item-actions en-linia';
+                    actions.appendChild(boto('btn-edit', 'edit', 'Editar', 'Editar ' + m.nom, function() { editMember(m.id); }));
+                    const btnDel = boto('btn-danger', 'trash', 'Eliminar', 'Eliminar ' + m.nom, function() { delMember(m.id); });
+                    btnDel.setAttribute('data-member-id', m.id);
+                    actions.appendChild(btnDel);
+                    cap.appendChild(actions);
+
+                    list0.appendChild(item);
+                });
+            }
+
+            // SELECT MEMBRES
+            const selCita = document.getElementById('in1');
+            const valorPrevi = selCita.value;
+            selCita.innerHTML = '';
+            const optBuida = document.createElement('option');
+            optBuida.value = '';
+            optBuida.textContent = '-- Selecciona --';
+            selCita.appendChild(optBuida);
+            members.forEach(m => {
+                const o = document.createElement('option');
+                o.value = m.id;
+                o.textContent = m.nom; // text pur: mai s'interpreta com a HTML
+                selCita.appendChild(o);
+            });
+            selCita.value = valorPrevi;
+
+            // CITES PROXIMES
+            const list1 = document.getElementById('list1');
+            list1.innerHTML = '';
+
+            const prox = cites.filter(c => !c.done).sort(comparaCites);
+
+            // FILTRE PER MEMBRE
+            if (filtreProximes && !members.some(m => m.id == filtreProximes)) filtreProximes = ''; // el membre ja no existeix
+            const filtreBar = document.getElementById('filtreBar');
+            const filtreSel = document.getElementById('filtreMembre');
+            filtreBar.style.display = members.length ? '' : 'none';
+            filtreSel.innerHTML = '';
+            const optTots = document.createElement('option');
+            optTots.value = '';
+            optTots.textContent = 'Tots els membres (' + prox.length + ')';
+            filtreSel.appendChild(optTots);
+            members.forEach(m => {
+                const o = document.createElement('option');
+                o.value = m.id;
+                o.textContent = m.nom + ' (' + prox.filter(c => c.mid == m.id).length + ')';
+                filtreSel.appendChild(o);
+            });
+            filtreSel.value = filtreProximes;
+
+            const ord1 = filtreProximes ? prox.filter(c => c.mid == filtreProximes) : prox;
+            const nomCites = prox.length === 1 ? ' cita pròxima' : ' cites pròximes';
+            document.getElementById('filtreResum').textContent = filtreProximes
+                ? 'Mostrant ' + ord1.length + ' de ' + prox.length + nomCites
+                : prox.length + nomCites;
+
+            if (ord1.length === 0) {
+                if (filtreProximes) {
+                    const mf = members.find(m => m.id == filtreProximes);
+                    list1.appendChild(elBuit('Cap cita pròxima per a ' + (mf ? mf.nom : 'aquest membre'), 'calendar'));
+                } else {
+                    list1.appendChild(elBuit('Cap cita', 'calendar'));
+                    const cta = document.createElement('div');
+                    cta.className = 'empty-cta';
+                    cta.appendChild(boto('btn-tonal', 'plus', 'Registrar una cita', null, function() { tab(1); }));
+                    list1.appendChild(cta);
+                }
+            } else {
+                ord1.forEach(c => {
+                    const m = members.find(x => x.id == c.mid);
+                    const d = formatData(c.data);
+                    const dies = diesFins(c.data);
+                    const vencuda = esVencuda(c);
+
+                    const item = document.createElement('div');
+                    item.className = 'list-item cita-proxima' + (vencuda ? ' cita-vencuda' : '') + (dies === 0 ? ' cita-avui' : '') + (dies === 1 ? ' cita-dema' : '');
+
+                    const cap = document.createElement('div');
+                    cap.className = 'item-head';
+                    cap.appendChild(avatar(icona(vencuda ? 'alert-triangle' : dies === 0 ? 'calendar-check' : dies === 1 ? 'bell' : 'calendar')));
+                    const info = document.createElement('div');
+                    info.className = 'list-item-info';
+                    const h3 = document.createElement('h3');
+                    h3.textContent = c.metge;
+                    info.appendChild(h3);
+
+                    if (vencuda) {
+                        info.appendChild(etiquetaCita('cita-badge-vencuda', 'Data passada: marca‑la com a feta o elimina‑la'));
+                    } else if (dies === 0 || dies === 1) {
+                        info.appendChild(etiquetaCita(dies === 0 ? 'cita-badge-avui' : 'cita-badge-dema', dies === 0 ? 'Avui' : 'Demà'));
+                    }
+                    cap.appendChild(info);
+                    item.appendChild(cap);
+
+                    // Totes les dades introduïdes en crear la cita
+                    const detalls = document.createElement('div');
+                    detalls.className = 'cita-detalls';
+                    const files = [
+                        ['user', 'Membre', m ? m.nom : '?'],
+                        ['stethoscope', 'Especialitat', c.esp],
+                        ['calendar', 'Data', d],
+                        ['clock', 'Hora', c.hora],
+                        ['map-pin', 'Ubicació', c.ubi],
+                        ['file-text', 'Notes', c.notes]
+                    ];
+                    files.forEach(function(f) {
+                        if (!f[2]) return; // els camps opcionals buits no es mostren
+                        const fila = document.createElement('div');
+                        fila.className = 'cita-fila';
+                        const etiqueta = document.createElement('span');
+                        etiqueta.className = 'cita-etiqueta';
+                        etiqueta.appendChild(icona(f[0]));
+                        const nomCamp = document.createElement('span');
+                        nomCamp.textContent = f[1];
+                        etiqueta.appendChild(nomCamp);
+                        const valor = document.createElement('span');
+                        valor.className = 'cita-valor';
+                        valor.textContent = f[2];
+                        fila.appendChild(etiqueta);
+                        fila.appendChild(valor);
+                        detalls.appendChild(fila);
+                    });
+                    item.appendChild(detalls);
+
+                    const actions = document.createElement('div');
+                    actions.className = 'list-item-actions';
+                    const btnDone = boto('btn-success', 'check', 'Feta', 'Marcar la cita com a feta', function() { markDone(c.id); });
+                    btnDone.setAttribute('data-cite-id', c.id);
+                    actions.appendChild(btnDone);
+                    actions.appendChild(boto('btn-edit', 'edit', 'Editar', 'Editar la cita', function() { editCite(c.id); }));
+                    const btnDel = boto('btn-danger', 'trash', 'Eliminar', 'Eliminar la cita', function() { delCite(c.id); });
+                    btnDel.setAttribute('data-cite-id', c.id);
+                    actions.appendChild(btnDel);
+                    item.appendChild(actions);
+
+                    list1.appendChild(item);
+                });
+            }
+
+            // HISTORIAL
+            const list2 = document.getElementById('list2');
+            list2.innerHTML = '';
+
+            const ord2 = cites.filter(c => c.done).sort((a, b) => comparaCites(b, a));
+
+            if (ord2.length === 0) {
+                list2.appendChild(elBuit('Sense historial', 'history'));
+            } else {
+                ord2.forEach(c => {
+                    const m = members.find(x => x.id == c.mid);
+                    const d = formatData(c.data);
+
+                    const item = document.createElement('div');
+                    item.className = 'list-item cita-completada';
+
+                    const cap = document.createElement('div');
+                    cap.className = 'item-head';
+                    cap.appendChild(avatar(icona('check')));
+                    const info = document.createElement('div');
+                    info.className = 'list-item-info';
+                    const h3 = document.createElement('h3');
+                    h3.textContent = c.metge;
+                    const p = document.createElement('p');
+                    p.textContent = (m ? m.nom : '?') + ' · ' + d;
+                    info.appendChild(h3);
+                    info.appendChild(p);
+                    cap.appendChild(info);
+                    item.appendChild(cap);
+
+                    const actions = document.createElement('div');
+                    actions.className = 'list-item-actions en-linia';
+                    actions.appendChild(boto('btn-edit', 'edit', 'Editar', 'Editar la cita', function() { editCite(c.id); }));
+                    const btnDel = boto('btn-danger', 'trash', 'Eliminar', 'Eliminar la cita', function() { delCite(c.id); });
+                    btnDel.setAttribute('data-cite-id', c.id);
+                    actions.appendChild(btnDel);
+                    cap.appendChild(actions);
+
+                    list2.appendChild(item);
+                });
+            }
+        }
+
+        // ============ CANVI DE DIA ============
+        // Si l'app es queda oberta (o en segon pla) i passa la mitjanit, les etiquetes
+        // Avui / Demà / Data passada s'actualitzen soles.
+        function comprovaCanviDeDia() {
+            if (avuiISO() !== diaRenderitzat) render();
+        }
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) comprovaCanviDeDia();
+        });
+        setInterval(comprovaCanviDeDia, 60000);
+
+        // ============ CÒPIA DE SEGURETAT ============
+        async function exportBackup() {
+            const payload = {
+                app: 'cites-mediques',
+                exportedAt: new Date().toISOString(),
+                members,
+                doctors,
+                cites
+            };
+            const data = JSON.stringify(payload, null, 2);
+            const filename = 'cites-mediques-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+
+            try {
+                const downloads = (typeof claude !== 'undefined') ? await claude.use('downloads') : null;
+                if (downloads) {
+                    const result = await downloads.save({ filename, data });
+                    if (result) {
+                        showMsg('mBackup', '✅ Còpia de seguretat desada!', false);
+                    } else {
+                        showMsg('mBackup', "❌ No s'ha desat (cancel·lat)", true);
+                    }
+                    return;
+                }
+            } catch (err) {
+                console.error('Error exportant:', err);
+            }
+
+            // Fallback: navegador normal (fora de l'entorn de Claude)
+            try {
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showMsg('mBackup', '✅ Còpia de seguretat descarregada!', false);
+            } catch (err) {
+                console.error('Error en fallback de descàrrega:', err);
+                showMsg('mBackup', "❌ No s'ha pogut exportar", true);
+            }
+        }
+
+        // Valida i neteja una còpia: només accepta dades amb el format esperat
+        function netejaCopia(parsed) {
+            const text = function(v) { return typeof v === 'string' ? v.trim() : ''; };
+            let ignorades = 0;
+            const idsMembres = new Set();
+            const membresOk = [];
+            (Array.isArray(parsed.members) ? parsed.members : []).forEach(function(m) {
+                const id = Number(m && m.id);
+                const nom = text(m && m.nom);
+                if (!m || !Number.isFinite(id) || idsMembres.has(id) || !nom) { ignorades++; return; }
+                idsMembres.add(id);
+                membresOk.push({ id: id, nom: nom });
+            });
+            const idsCites = new Set();
+            const citesOk = [];
+            (Array.isArray(parsed.cites) ? parsed.cites : []).forEach(function(c) {
+                if (!c) { ignorades++; return; }
+                const id = Number(c.id);
+                const mid = Number(c.mid);
+                const metge = text(c.metge);
+                const dataOk = typeof c.data === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(c.data) && !isNaN(new Date(c.data + 'T00:00:00'));
+                const horaOk = typeof c.hora === 'string' && /^\d{2}:\d{2}$/.test(c.hora);
+                if (!Number.isFinite(id) || idsCites.has(id) || !idsMembres.has(mid) || !metge || !dataOk || !horaOk) { ignorades++; return; }
+                idsCites.add(id);
+                citesOk.push({ id: id, mid: mid, metge: metge, esp: text(c.esp), data: c.data, hora: c.hora,
+                               ubi: text(c.ubi), notes: text(c.notes), done: c.done === true });
+            });
+            // Metges: es valida la llista i s'afegeixen els de les cites que no hi siguin (còpies antigues)
+            const idsMetges = new Set();
+            const metgesOk = [];
+            (Array.isArray(parsed.doctors) ? parsed.doctors : []).forEach(function(d) {
+                const id = Number(d && d.id);
+                const nom = text(d && d.nom);
+                const repetit = metgesOk.some(function(x) { return x.nom.toLowerCase() === nom.toLowerCase(); });
+                if (!d || !Number.isFinite(id) || idsMetges.has(id) || !nom || repetit) { ignorades++; return; }
+                idsMetges.add(id);
+                metgesOk.push({ id: id, nom: nom });
+            });
+            completaMetges(metgesOk, citesOk);
+            return { members: membresOk, cites: citesOk, doctors: metgesOk, ignorades: ignorades };
+        }
+
+        function importBackup(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let parsed;
+                try {
+                    parsed = JSON.parse(e.target.result);
+                } catch (err) {
+                    showMsg('mBackup', '❌ El fitxer no és una còpia vàlida', true);
+                    return;
+                }
+                if (!parsed || !Array.isArray(parsed.members) || !Array.isArray(parsed.cites)) {
+                    showMsg('mBackup', '❌ El fitxer no té el format esperat', true);
+                    return;
+                }
+                const net = netejaCopia(parsed);
+                if (net.ignorades > 0 && net.members.length === 0 && net.cites.length === 0) {
+                    showMsg('mBackup', '❌ El fitxer no conté dades vàlides', true);
+                    return;
+                }
+                const avis = net.ignorades > 0 ? ' Se\'n ignoraran ' + net.ignorades + ' d\'invàlides.' : '';
+                showConfirm('Això substituirà totes les dades actuals (' + members.length + ' membres, ' + cites.length + ' cites) per les del fitxer (' + net.members.length + ' membres, ' + net.cites.length + ' cites).' + avis + ' Continuar?', function() {
+                    members = net.members;
+                    cites = net.cites;
+                    doctors = net.doctors;
+                    save();
+                    showMsg('mBackup', '✅ Còpia restaurada correctament!' + (net.ignorades > 0 ? ' (' + net.ignorades + ' entrades invàlides ignorades)' : ''), false);
+                });
+            };
+            reader.onerror = function() {
+                showMsg('mBackup', '❌ Error llegint el fitxer', true);
+            };
+            reader.readAsText(file);
+        }
+
+        document.getElementById('btnExport').addEventListener('click', exportBackup);
+        document.getElementById('btnImportTrigger').addEventListener('click', function() {
+            document.getElementById('fileImport').click();
+        });
+        document.getElementById('fileImport').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) importBackup(file);
+            e.target.value = '';
+        });
+
+        // ============ PWA: Service Worker real ============
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js').catch(function(err) {
+                    console.log('Service Worker no registrat:', err.message);
+                });
+            });
+        }
+
+        render();
+
+        // Dreceres de la icona d'Android (mantenint premuda la icona) i enllaços directes: #nova, #proximes, #historial, #membres
+        function obreSegonsHash() {
+            const dest = { nova: 1, proximes: 2, historial: 3, membres: 0 }[location.hash.slice(1)];
+            if (dest !== undefined) tab(dest);
+        }
+        window.addEventListener('hashchange', obreSegonsHash);
+        obreSegonsHash();
+    </script>
+</body>
+</html>
